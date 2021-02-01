@@ -32,3 +32,9 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# others
+testpdfs
+
+.vscode
+package-lock.json
