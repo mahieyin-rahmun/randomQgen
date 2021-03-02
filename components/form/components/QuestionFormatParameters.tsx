@@ -1,58 +1,62 @@
-import React from 'react';
-import { TFormModel } from '../../../utils/types';
+import React from "react";
+import { TFormModel } from "../../../utils/types";
 
-import { createStyles, Grid, makeStyles, Theme, Typography } from '@material-ui/core';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
+import {
+  createStyles,
+  Grid,
+  Input,
+  OutlinedInput,
+  makeStyles,
+  Theme,
+  Typography,
+} from "@material-ui/core";
+import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
 
-import { Field } from 'formik';
-import { Select, TextField, SimpleFileUpload } from 'formik-material-ui';
+import { Field } from "formik";
+import { Select, TextField, SimpleFileUpload } from "formik-material-ui";
 
-
-const useStyles = makeStyles((theme: Theme) => 
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     formcontrol: {
       margin: theme.spacing(2),
       minWidth: "75%",
-      padding: theme.spacing(2, 0, 2, 0)
+      padding: theme.spacing(2, 0, 2, 0),
     },
     inputlabel: {
       fontSize: "1rem",
-      padding: theme.spacing(0, 0, 5, 0)
+      padding: theme.spacing(0, 0, 5, 0),
     },
     selectfield: {
-      textAlign: "left"
-    }
-  })
-)
+      textAlign: "left",
+    },
+  }),
+);
 function QuestionFormatParameters(props: TFormModel) {
-  const { 
-    formField: { 
-      isMultiPage, 
-      numberOfStudents, 
-      studentIdTextFile 
-    } 
+  const {
+    formField: { isMultiPage, numberOfStudents, studentIdTextFile },
   } = props;
 
   const classes = useStyles();
 
   return (
     <React.Fragment>
-      <Typography variant="h6">
-        Question Format Parameters
-      </Typography>
+      <Typography variant="h6">Question Format Parameters</Typography>
 
       <Grid container spacing={2} direction="column">
         <Grid item md={12}>
           <FormControl className={classes.formcontrol}>
-            <InputLabel htmlFor={isMultiPage.name} className={classes.inputlabel}>
+            <InputLabel
+              htmlFor={isMultiPage.name}
+              className={classes.inputlabel}
+            >
               {isMultiPage.label}
             </InputLabel>
             <Field
               component={Select}
-              name={isMultiPage.name}    
-              className={classes.selectfield}        
+              name={isMultiPage.name}
+              className={classes.selectfield}
             >
               <MenuItem value="yes">Yes</MenuItem>
               <MenuItem value="no">No</MenuItem>
@@ -69,19 +73,31 @@ function QuestionFormatParameters(props: TFormModel) {
           </FormControl>
 
           <FormControl className={classes.formcontrol}>
-            <Field
-              component={SimpleFileUpload}
-              label={studentIdTextFile.label}
+            <InputLabel
+              shrink={true}
+              variant="standard"
+              htmlFor={studentIdTextFile.name}
+            >
+              {studentIdTextFile.label}
+            </InputLabel>
+            <OutlinedInput
+              type="file"
               name={studentIdTextFile.name}
+              inputProps={{
+                accept: ".txt",
+              }}
             />
-            <Typography variant="caption" style={{ flexDirection: "row", display: "flex" }}>
+            <Typography
+              variant="caption"
+              style={{ flexDirection: "row", display: "flex" }}
+            >
               This will be used to set unique footers in each generated PDF.
             </Typography>
           </FormControl>
         </Grid>
       </Grid>
     </React.Fragment>
-  )
+  );
 }
 
-export default QuestionFormatParameters
+export default QuestionFormatParameters;
