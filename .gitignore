@@ -36,6 +36,7 @@ yarn-error.log*
 # others
 testpdfs
 tmp
+uploaded
 
 .vscode
 package-lock.json
