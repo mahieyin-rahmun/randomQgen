@@ -63,6 +63,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       // this doesn't need to be awaited as this is server side clean up
       fs.rmSync(taskFolder, { recursive: true });
     } catch (err) {
+      console.log(err);
       res.status(500);
       res.end();
     }
