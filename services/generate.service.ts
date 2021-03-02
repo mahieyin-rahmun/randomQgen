@@ -5,15 +5,12 @@ import CombinePdf from "./combinepdf.service";
 import ReconstructQuestionHolder from "./reconstruct.questionholder.service";
 
 interface IFields extends Fields {
-  isMultiPage: string,
-  numberOfStudents: string
+  isMultiPage: string;
+  numberOfStudents: string;
 }
 
 export default class GeneratePDFBufferService {
-  constructor(
-    private fields: Fields,
-    private files: Files
-  ) {}
+  constructor(private fields: Fields, private files: Files) {}
 
   async generatePdfBufferArray(): Promise<Buffer[]> {
     const pdfBufferArray = new Array<Buffer>();
@@ -22,13 +19,15 @@ export default class GeneratePDFBufferService {
     const multiPage: boolean = isMultiPage === "yes";
     const numberOfStudentsInt = parseInt(numberOfStudents);
 
+    // this should be outside the for loop as this only needs to be done once
+    const reconstructQH = new ReconstructQuestionHolder(multiPage, this.files);
+    const pdfBufferObj = reconstructQH.reconstruct();
+
     for (let index = 0; index < numberOfStudentsInt; index++) {
-      const reconstructQH = new ReconstructQuestionHolder(multiPage, this.files);
-      const pdfBufferObj = reconstructQH.reconstruct();
       const combiner = new CombinePdf(pdfBufferObj);
-  
+
       let combinedPdfUint8Array: Uint8Array;
-  
+
       if (multiPage) {
         combinedPdfUint8Array = await combiner.combineMultiPageQuestions();
       } else {
