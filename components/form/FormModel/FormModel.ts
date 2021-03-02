@@ -14,15 +14,25 @@ const formModel: TFormModel = {
       requiredErrorMessage: "You must specify your number of students" as const,
       invalidErrorMessage: "This must be between 8 and 50" as const,
     },
+    facultyInitial: {
+      name: "facultyInitial",
+      label: "Initial of Faculty (e.g. SAS3)",
+      invalidErrorMessage: "Invalid faculty initial",
+    },
+    semester: {
+      name: "semester",
+      label: "Semester (e.g. Spring 2021)",
+      invalidErrorMessage: "Invalid semester name",
+    },
     studentIdTextFile: {
       name: "studentIdTextFile" as const,
-      label: "(Optional) Upload a text file containing your student IDs" as const,
+      label: "Upload a text file containing your student IDs" as const,
     },
     questionHolder: {
       name: "questionHolder" as const,
       label: "Add question PDFs (single page/multi page)" as const,
       requiredErrorMessage: "You must add files for at least two questions" as const,
-      invalidErrorMessage: "You can have at most 15 questions" as const
+      invalidErrorMessage: "You can have at most 15 questions" as const,
     },
   },
 };
