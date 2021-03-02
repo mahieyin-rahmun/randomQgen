@@ -3,10 +3,7 @@ import fs from "fs";
 import { IPDFHolder, IPDFBuffer } from "./types/types";
 
 export default class ReconstructQuestionHolder {
-  constructor(
-    private multiPage: boolean,
-    private files: Files 
-  ) {}
+  constructor(private multiPage: boolean, private files: Files) {}
 
   private getReconstructedObject(file: File): IPDFHolder {
     const { path, name } = file;
@@ -15,8 +12,8 @@ export default class ReconstructQuestionHolder {
     const reconstructed: IPDFHolder = {
       name: name,
       path: path,
-      file: buffer
-    }
+      file: buffer,
+    };
 
     return reconstructed;
   }
@@ -43,6 +40,14 @@ export default class ReconstructQuestionHolder {
       }
     }
 
-    return resultObj;
+    // we need to make sure that this is sorted by the name attribute
+    const orderedResultObj = Object.keys(resultObj)
+      .sort() // question1, question2, question3... etc.
+      .reduce((orderedObj, currentKey, _, __) => {
+        orderedObj[currentKey] = resultObj[currentKey];
+        return orderedObj;
+      }, {});
+
+    return orderedResultObj;
   }
 }
