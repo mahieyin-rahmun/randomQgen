@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Fields, Files, IncomingForm } from "formidable";
-import GeneratePdfService from "./services/generate.service";
 import fs from "fs";
-import { pipeline } from "stream";
-import BufferArrayArchiver from "./services/archiver.service";
+import GeneratePdfService from "../../services/generate.service";
+import BufferArrayArchiver from "../../services/archiver.service";
 
 export const config = {
   api: {
@@ -11,9 +10,12 @@ export const config = {
   },
 };
 
-const getFieldsAndFiles = (req: NextApiRequest, form: IncomingForm): Promise<{
-  fields: Fields,
-  files: Files
+const getFieldsAndFiles = (
+  req: NextApiRequest,
+  form: IncomingForm,
+): Promise<{
+  fields: Fields;
+  files: Files;
 }> => {
   return new Promise((resolve, reject) => {
     form.parse(req, (err, fields, files) => {
@@ -22,7 +24,7 @@ const getFieldsAndFiles = (req: NextApiRequest, form: IncomingForm): Promise<{
       }
 
       resolve({ fields, files });
-    })
+    });
   });
 };
 
@@ -43,12 +45,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const generatePdfService = new GeneratePdfService(fields, files);
       const pdfBufferArray = await generatePdfService.generatePdfBufferArray();
 
-      const bufferArchiver = BufferArrayArchiver.getBufferArrayArchiver(pdfBufferArray);
-      
-      res.status(200).setHeader("Content-Type", 'application/zip');
+      const bufferArchiver = BufferArrayArchiver.getBufferArrayArchiver(
+        pdfBufferArray,
+      );
+
+      res.status(200).setHeader("Content-Type", "application/zip");
       bufferArchiver.OutputStream = res;
       bufferArchiver.getArchivedFile();
-      
+
       const archive = bufferArchiver.Archive;
       await archive.finalize();
     } catch (err) {
