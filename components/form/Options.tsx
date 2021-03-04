@@ -11,6 +11,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Formik, Form, FormikHelpers } from "formik";
 import axios from "axios";
 import fileDownload from "js-file-download";
+import { useRouter } from "next/router";
 
 import formModel from "./FormModel/FormModel";
 import { initialValues } from "./FormModel/InitialValues";
@@ -77,6 +78,7 @@ const steps: string[] = ["Choose Parameters", "Select PDFs", "Finalize"];
 function Options() {
   const [activeStep, setActiveStep] = useState(0);
   const classes = useStyles();
+  const router = useRouter();
   const isLastStep: boolean = activeStep === steps.length - 1;
 
   const submitForm = async (
@@ -124,7 +126,9 @@ function Options() {
       console.log(
         "You chose to include footer information but did not submit all the necessary data",
       );
-    } else {
+    }
+
+    if (containsFooterInfo && studentIdTextFile && facultyInitial && semester) {
       formData.append(
         "studentIdTextFile",
         studentIdTextFile,
@@ -141,6 +145,7 @@ function Options() {
       .then((response) => {
         fileDownload(response.data, `questions_${Date.now()}.zip`);
         actions.setSubmitting(false);
+        router.push("/");
       })
       .catch((error) => {
         actions.setSubmitting(false);
@@ -183,8 +188,12 @@ function Options() {
         >
           {({ values, isSubmitting, setValues, errors }) => (
             <Form id={formId}>
-              {Object.keys(errors).map((errorKey) => (
-                <AlertComponent message={errors[errorKey]} severity="error" />
+              {Object.keys(errors).map((errorKey, index) => (
+                <AlertComponent
+                  key={index}
+                  message={errors[errorKey]}
+                  severity="error"
+                />
               ))}
               {renderStepContent(activeStep, values, setValues)}
               <div className={classes.buttonDiv}>
