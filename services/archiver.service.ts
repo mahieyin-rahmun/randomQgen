@@ -8,7 +8,7 @@ export default class BufferArrayArchiver {
   private filePath: string;
   private static instance: BufferArrayArchiver;
 
-  private constructor(
+  public constructor(
     private bufferArray: TGeneratedPDFBuffer[],
     filePath?: string,
     options: ZipOptions = {
@@ -59,23 +59,10 @@ export default class BufferArrayArchiver {
     });
   }
 
-  getArchivedFile() {
+  async getArchivedFile() {
     for (let index = 0; index < this.bufferArray.length; index++) {
       const { filename, pdfBuffer } = this.bufferArray[index];
-      this.archive.append(pdfBuffer, { name: filename });
+      await this.archive.append(pdfBuffer, { name: filename });
     }
-  }
-
-  static getBufferArrayArchiver(
-    pdfBufferArray: TGeneratedPDFBuffer[],
-    filePath?: string,
-  ) {
-    // singleton because I am not sure if the archiver is thread safe
-    if (this.instance) {
-      return this.instance;
-    }
-
-    this.instance = new BufferArrayArchiver(pdfBufferArray, filePath);
-    return this.instance;
   }
 }

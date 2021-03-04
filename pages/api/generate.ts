@@ -33,15 +33,21 @@ const getFieldsAndFiles = (
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const taskId = v4();
-    const rootUploadFolder = path.resolve(process.cwd(), "uploaded");
+    const rootUploadFolder = path.resolve("/", "tmp", "uploaded");
     const taskFolder = path.resolve(rootUploadFolder, taskId);
 
     const form = new IncomingForm();
     form.multiples = true;
     form.uploadDir = taskFolder;
 
-    if (!fs.existsSync(form.uploadDir)) {
+    try {
       fs.mkdirSync(form.uploadDir, { recursive: true });
+    } catch (error) {
+      if (error.code !== "EEXIST") {
+        console.log(error);
+        res.status(500);
+        return res.json({ error: "Sorry, try again in a few moments!" });
+      }
     }
 
     try {
@@ -49,13 +55,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const generatePdfService = new GeneratePdfService(fields, files);
       const pdfBufferArray = await generatePdfService.generatePdfBufferArray();
 
-      const bufferArchiver = BufferArrayArchiver.getBufferArrayArchiver(
-        pdfBufferArray,
-      );
+      const bufferArchiver = new BufferArrayArchiver(pdfBufferArray);
 
       res.status(200).setHeader("Content-Type", "application/zip");
       bufferArchiver.OutputStream = res;
-      bufferArchiver.getArchivedFile();
+      await bufferArchiver.getArchivedFile();
 
       const archive = bufferArchiver.Archive;
       await archive.finalize();
@@ -65,7 +69,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     } catch (err) {
       console.log(err);
       res.status(500);
-      res.end();
+      return res.json({ error: "Sorry, try again in a few moments!" });
     }
   } else {
     res.status(404);
