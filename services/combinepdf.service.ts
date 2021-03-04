@@ -5,14 +5,13 @@ import { IPDFBuffer, IPDFHolder, PDFDocAndPageCount } from "./types/types";
 class CombinePdf {
   constructor(
     private questionPdfBuffer: IPDFBuffer,
-    private studentIdTextFile?: FormidableFile,
+    private facultyInitial?: string,
+    private semester?: string,
   ) {}
 
   private addFooter(
     pdfPage: PDFPage,
-    studentId?: string,
-    facultyInitial?: string,
-    semester?: string,
+    studentId: string,
     options?: object,
   ): void {
     // assuming A4 pages
@@ -26,7 +25,9 @@ class CombinePdf {
     };
 
     pdfPage.drawText(
-      `Faculty: SAS3${getTabs(13)}Spring 2021${getTabs(13)}1234567`,
+      `Faculty: ${this.facultyInitial}${getTabs(13)}${this.semester}${getTabs(
+        13,
+      )}${studentId}`,
       {
         size: 11,
         x: 42,

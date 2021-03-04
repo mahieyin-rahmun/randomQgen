@@ -8,6 +8,8 @@ import ReconstructQuestionHolder from "./reconstruct.questionholder.service";
 interface IFields extends Fields {
   isMultiPage: string;
   numberOfStudents: string;
+  facultyInitial?: string;
+  semester?: string;
 }
 
 export default class GeneratePDFBufferService {
@@ -40,14 +42,15 @@ export default class GeneratePDFBufferService {
   async generatePdfBufferArray(): Promise<Buffer[]> {
     const pdfBufferArray = new Array<Buffer>();
 
-    const { isMultiPage, numberOfStudents } = this.fields as IFields;
+    const { isMultiPage, numberOfStudents, facultyInitial, semester } = this
+      .fields as IFields;
     const multiPage: boolean = isMultiPage === "yes";
     const numberOfStudentsInt = parseInt(numberOfStudents);
 
     // this should be outside the for loop as this only needs to be done once
     const reconstructQH = new ReconstructQuestionHolder(multiPage, this.files);
     const pdfBufferObj = reconstructQH.reconstruct();
-    const combiner = new CombinePdf(pdfBufferObj);
+    const combiner = new CombinePdf(pdfBufferObj, facultyInitial, semester);
 
     for (let index = 0; index < numberOfStudentsInt; index++) {
       let combinedPdfUint8Array: Uint8Array;
