@@ -1,6 +1,24 @@
+# randomQgen
+![image](https://user-images.githubusercontent.com/37664921/110021438-ebb27c80-7d54-11eb-82e5-ce08c8628f2b.png)
+
+[randomQgen](https://randomqgen.vercel.app/) is an online tool to generate random PDFs from question sets that you provide in order to mitigate the issue of students adopting unfair means in exams using Chegg, CourseHero or other online platforms. Read about the motivation [here](https://randomqgen.vercel.app/info).
+
+### Current features:
+- Generate random PDFs from question sets (questions can be single page or multi-page)
+- Able to assign unique footer at the end of each page in the generated PDFs (right now, the format is fixed)
+
+### Future work:
+- Add authentication
+- Save the zip files for a certain period of time if the user is authenticated when generating them
+- Offer more footer formats
+- Visualizing the output
+
+---------------------------------------------------------------------------------------------------------
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+### Getting Started for development
 
 First, run the development server:
 
