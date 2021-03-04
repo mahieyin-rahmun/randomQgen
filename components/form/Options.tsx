@@ -19,6 +19,7 @@ import QuestionFormatParameters from "./components/QuestionFormatParameters";
 import QuestionHolder from "./components/QuestionHolder";
 import Finalize from "./components/Finalize";
 import { IFormValues } from "../../utils/types";
+import AlertComponent from "../AlertComponent";
 
 const { formId, formField } = formModel;
 
@@ -88,7 +89,7 @@ function Options() {
       containsFooterInfo,
       studentIdTextFile,
       facultyInitial,
-      semester
+      semester,
     } = values;
     const multiPage = isMultiPage === "yes";
 
@@ -114,9 +115,14 @@ function Options() {
       }
     }
 
-    if (containsFooterInfo && !(studentIdTextFile && facultyInitial && semester)) {
+    if (
+      containsFooterInfo &&
+      !(studentIdTextFile && facultyInitial && semester)
+    ) {
       // error, user did not fill in all required values
-      console.log("You chose to include footer information but did not submit all the necessary data");
+      console.log(
+        "You chose to include footer information but did not submit all the necessary data",
+      );
     } else {
       formData.append(
         "studentIdTextFile",
@@ -176,8 +182,11 @@ function Options() {
           onSubmit={handleSubmit}
           validationSchema={validationSchema[activeStep]}
         >
-          {({ values, isSubmitting, setValues }) => (
+          {({ values, isSubmitting, setValues, errors }) => (
             <Form id={formId}>
+              {Object.keys(errors).map((errorKey) => (
+                <AlertComponent message={errors[errorKey]} severity="error" />
+              ))}
               {renderStepContent(activeStep, values, setValues)}
               <div className={classes.buttonDiv}>
                 {activeStep !== 0 && (
