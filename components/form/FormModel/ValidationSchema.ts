@@ -11,8 +11,21 @@ const {
   },
 } = formModel;
 
+function parseTextFile(studentIdTextFile) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      let textFileData = event.target.result;
+      let studentIdList = textFileData.toString().split("\n");
+      resolve(studentIdList.length);
+    };
+    reader.readAsText(studentIdTextFile);
+  });
+}
+
 export default [
   Yup.object().shape({
+    containsFooterInfo: Yup.boolean(),
     [isMultiPage.name]: Yup.string()
       .required()
       .test(
@@ -27,27 +40,68 @@ export default [
         numberOfStudents.invalidErrorMessage,
         (val) => val >= 8 && val <= 50,
       ),
-    [studentIdTextFile.name]: Yup.object().nullable(),
-    [facultyInitial.name]: Yup.string()
-      .nullable()
-      .test("facultyInitial", facultyInitial.invalidErrorMessage, (value) => {
-        // faculty initial regex: ^[a-zA-Z]+\d{0,1}$
-        return value && value.match(/^[a-zA-Z]+\d{0,1}$/) !== null;
-      }),
-    [semester.name]: Yup.string()
-      .nullable()
-      .test("semester", semester.invalidErrorMessage, (value) => {
-        // semester name regex: ^(Summer|Spring|Fall)\s\d{4}$
-        return value && value.match(/^(Summer|Spring|Fall)\s\d{4}$/) !== null;
-      }),
+    [studentIdTextFile.name]: Yup.mixed().when("containsFooterInfo", {
+      is: true,
+      then: Yup.mixed()
+        .defined(studentIdTextFile.requiredErrorMessage)
+        .test("presence", studentIdTextFile.requiredErrorMessage, (value) => {
+          return value instanceof File;
+        })
+        .test(
+          "matchNumberOfStudents",
+          studentIdTextFile.invalidErrorMessage,
+          async function (value) {
+            if (value instanceof File) {
+              const numberOfStudentIdsInTextFile = await parseTextFile(value);
+              const numberOfStudentsSpecified = this.parent.numberOfStudents;
+
+              return numberOfStudentIdsInTextFile === numberOfStudentsSpecified;
+            }
+
+            return false;
+          },
+        ),
+      otherwise: Yup.mixed().notRequired(),
+    }),
+    [facultyInitial.name]: Yup.string().when("containsFooterInfo", {
+      is: true,
+      then: Yup.string()
+        .required(facultyInitial.requiredErrorMessage)
+        .test("facultyInitial", facultyInitial.invalidErrorMessage, (value) => {
+          // faculty initial regex: ^[a-zA-Z]+\d{0,1}$
+          return value && value.match(/^[a-zA-Z]+\d{0,1}$/) !== null;
+        }),
+      otherwise: Yup.string().notRequired(),
+    }),
+    [semester.name]: Yup.string().when("containsFooterInfo", {
+      is: true,
+      then: Yup.string()
+        .required(semester.requiredErrorMessage)
+        .test("semester", semester.invalidErrorMessage, (value) => {
+          // semester name regex: ^(Summer|Spring|Fall)\s\d{4}$
+          return value && value.match(/^(Summer|Spring|Fall)\s\d{4}$/) !== null;
+        }),
+      otherwise: Yup.string().nullable(true),
+    }),
   }),
   Yup.object().shape({
     [questionHolder.name]: Yup.array()
       .required()
       .test(
-        "length",
+        "lengthAndFile",
         questionHolder.invalidErrorMessage,
-        (value) => value.length >= 2 && value.length <= 15,
+        (fileArray) => {
+          let valid = true;
+
+          for (let fileObj of fileArray) {
+            // check if the user has selected a file
+            if (!fileObj.file) {
+              valid = false;
+            }
+          }
+
+          return valid && fileArray.length >= 2 && fileArray.length <= 15;
+        },
       ),
   }),
 ];
