@@ -20,8 +20,9 @@ import QuestionHolder from "./components/QuestionHolder";
 import Finalize from "./components/Finalize";
 import { IFormValues } from "../../utils/types";
 import AlertComponent from "../AlertComponent";
+import { GENERATE_PDF_ENDPOINT, makeUrl } from "../../utils/backend";
 
-const { formId, formField } = formModel;
+const { formId } = formModel;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -134,7 +135,7 @@ function Options() {
     }
 
     axios
-      .post("http://localhost:3000/api/generate", formData, {
+      .post(makeUrl(GENERATE_PDF_ENDPOINT), formData, {
         responseType: "blob",
       })
       .then((response) => {
