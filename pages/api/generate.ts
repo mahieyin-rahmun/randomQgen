@@ -40,8 +40,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     form.multiples = true;
     form.uploadDir = taskFolder;
 
-    if (!fs.existsSync(form.uploadDir)) {
+    try {
       fs.mkdirSync(form.uploadDir, { recursive: true });
+    } catch (error) {
+      if (error.code !== "EEXIST") {
+        console.log(error);
+        res.status(500);
+        return res.json({ error: "Sorry, try again in a few moments!" });
+      }
     }
 
     try {
@@ -65,7 +71,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     } catch (err) {
       console.log(err);
       res.status(500);
-      res.end();
+      return res.json({ error: "Sorry, try again in a few moments!" });
     }
   } else {
     res.status(404);
