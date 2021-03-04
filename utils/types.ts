@@ -41,3 +41,8 @@ export type IQuestionHolderProps = {
     shouldValidate?: boolean,
   ) => void;
 };
+
+export type TGeneratedPDFBuffer = {
+  filename: string;
+  pdfBuffer: Buffer;
+};

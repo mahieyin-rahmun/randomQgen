@@ -2,6 +2,8 @@ import { Fields, Files, File as FormidableFile } from "formidable";
 import fs from "fs";
 import CombinePdf from "./combinepdf.service";
 import ReconstructQuestionHolder from "./reconstruct.questionholder.service";
+import { TGeneratedPDFBuffer } from "../utils/types";
+import { generateGenericStudentQuestionPDFFileName } from "../utils/utilities";
 
 interface IFields extends Fields {
   isMultiPage: string;
@@ -37,8 +39,8 @@ export default class GeneratePDFBufferService {
     this.files = files;
   }
 
-  async generatePdfBufferArray(): Promise<Buffer[]> {
-    const pdfBufferArray = new Array<Buffer>();
+  async generatePdfBufferArray(): Promise<TGeneratedPDFBuffer[]> {
+    const pdfBufferArray = new Array<TGeneratedPDFBuffer>();
 
     const { isMultiPage, numberOfStudents, facultyInitial, semester } = this
       .fields as IFields;
@@ -69,7 +71,12 @@ export default class GeneratePDFBufferService {
       }
 
       const combinedPdfBuffer = Buffer.from(combinedPdfUint8Array);
-      pdfBufferArray.push(combinedPdfBuffer);
+      pdfBufferArray.push({
+        filename: studentId
+          ? `${studentId}.pdf`
+          : generateGenericStudentQuestionPDFFileName(index),
+        pdfBuffer: combinedPdfBuffer,
+      });
     }
 
     return pdfBufferArray;
