@@ -59,10 +59,10 @@ export default class BufferArrayArchiver {
     });
   }
 
-  getArchivedFile() {
+  async getArchivedFile() {
     for (let index = 0; index < this.bufferArray.length; index++) {
       const { filename, pdfBuffer } = this.bufferArray[index];
-      this.archive.append(pdfBuffer, { name: filename });
+      await this.archive.append(pdfBuffer, { name: filename });
     }
   }
 

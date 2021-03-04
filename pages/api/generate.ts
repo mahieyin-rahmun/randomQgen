@@ -61,7 +61,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       res.status(200).setHeader("Content-Type", "application/zip");
       bufferArchiver.OutputStream = res;
-      bufferArchiver.getArchivedFile();
+      await bufferArchiver.getArchivedFile();
 
       const archive = bufferArchiver.Archive;
       await archive.finalize();
