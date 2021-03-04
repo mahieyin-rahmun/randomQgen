@@ -5,7 +5,7 @@ const formModel: TFormModel = {
   formField: {
     isMultiPage: {
       name: "isMultiPage" as const,
-      label: "Do you have multi page questions in the PDF?" as const,
+      label: "Do you have multi page questions in your question PDFs?" as const,
       requiredErrorMessage: "You must specify this parameter" as const,
     },
     numberOfStudents: {
