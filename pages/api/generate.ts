@@ -55,9 +55,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const generatePdfService = new GeneratePdfService(fields, files);
       const pdfBufferArray = await generatePdfService.generatePdfBufferArray();
 
-      const bufferArchiver = BufferArrayArchiver.getBufferArrayArchiver(
-        pdfBufferArray,
-      );
+      const bufferArchiver = new BufferArrayArchiver(pdfBufferArray);
 
       res.status(200).setHeader("Content-Type", "application/zip");
       bufferArchiver.OutputStream = res;
