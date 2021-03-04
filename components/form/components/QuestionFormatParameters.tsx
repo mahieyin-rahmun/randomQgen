@@ -65,22 +65,21 @@ function QuestionFormatParameters(props: IQuestionHolderProps) {
     checked: boolean,
   ) => {
     setIncludeFooter(checked);
-    
+
     if (checked) {
       setValues({
         ...formValues,
         containsFooterInfo: checked,
       });
     } else {
-      // if user chose to not include footer information, make sure to nullify all other information
+      // if user chose to not include footer information, make sure to nullify all other information related to footer
       setValues({
         ...formValues,
         containsFooterInfo: checked,
-        facultyInitial: null,
-        semester: null,
-        studentIdTextFile: null,
+        facultyInitial: "",
+        semester: "",
+        studentIdTextFile: undefined,
       });
-      
     }
   };
 
@@ -136,7 +135,7 @@ function QuestionFormatParameters(props: IQuestionHolderProps) {
             <FormControlLabel
               control={
                 <Switch
-                  checked={includeFooter}
+                  checked={includeFooter || formValues.containsFooterInfo}
                   onChange={handleIncludeFooterChange}
                   name="includeFooter"
                   color="default"
@@ -146,7 +145,7 @@ function QuestionFormatParameters(props: IQuestionHolderProps) {
             />
           </Grid>
 
-          {includeFooter && (
+          {(includeFooter || formValues.containsFooterInfo) && (
             <PDFFooterForm
               classes={classes}
               formModel={formModel}
