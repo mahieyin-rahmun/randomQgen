@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from "react";
 import Options from "../components/form/Options";
-import MuiPaperWithStyle from '../components/custom/MuiPaperWithStyle';
+import MuiPaperWithStyle from "../components/custom/MuiPaperWithStyle";
 
-export default function Start() {  
+export default function Start() {
   return (
     <MuiPaperWithStyle>
       <Options />
     </MuiPaperWithStyle>
-  )
+  );
 }

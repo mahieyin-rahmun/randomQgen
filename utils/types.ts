@@ -1,5 +1,3 @@
-import { PDFDocument } from "pdf-lib";
-
 export interface IQuestionHolder {
   name: string;
   title: string;

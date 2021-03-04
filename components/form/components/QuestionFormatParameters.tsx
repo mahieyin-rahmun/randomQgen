@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IQuestionHolderProps, TFormModel } from "../../../utils/types";
+import { IQuestionHolderProps } from "../../../utils/types";
 
 import {
   createStyles,
@@ -16,7 +16,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 
 import { Field } from "formik";
-import { Select, TextField, SimpleFileUpload } from "formik-material-ui";
+import { Select, TextField } from "formik-material-ui";
 import PDFFooterForm from "./PDFFooterForm";
 
 const useStyles = makeStyles((theme: Theme) =>
