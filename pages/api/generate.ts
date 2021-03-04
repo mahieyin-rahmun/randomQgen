@@ -33,7 +33,7 @@ const getFieldsAndFiles = (
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const taskId = v4();
-    const rootUploadFolder = path.resolve(process.cwd(), "uploaded");
+    const rootUploadFolder = path.resolve("/", "tmp", "uploaded");
     const taskFolder = path.resolve(rootUploadFolder, taskId);
 
     const form = new IncomingForm();
