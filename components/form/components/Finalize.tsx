@@ -1,20 +1,35 @@
-import { Box, Card, CardContent, createStyles, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme, Typography } from "@material-ui/core";
+import {
+  Box,
+  Card,
+  CardContent,
+  createStyles,
+  makeStyles,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Theme,
+  Typography,
+} from "@material-ui/core";
 import React from "react";
 import { IQuestionHolder, IQuestionHolderProps } from "../../../utils/types";
 
-const useStyles = makeStyles((theme: Theme) => 
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     cardtitle: {
-      fontSize: 20
+      fontSize: 20,
     },
     cardbody: {
       textAlign: "left",
       caption: {
-        textWeight: "bold"
-      }
-    }
-  })
-)
+        textWeight: "bold",
+      },
+    },
+  }),
+);
 
 function Finalize(props: IQuestionHolderProps) {
   const {
@@ -23,12 +38,17 @@ function Finalize(props: IQuestionHolderProps) {
       numberOfStudents,
       questionHolder,
       studentIdTextFile,
+      facultyInitial,
+      semester,
     },
   } = props;
 
   const classes = useStyles();
 
-  const getQuestionFileNames = (questionHolder: IQuestionHolder, fileIndex?: number) => {
+  const getQuestionFileNames = (
+    questionHolder: IQuestionHolder,
+    fileIndex?: number,
+  ) => {
     let fileName: string = "";
 
     if (questionHolder.file) {
@@ -47,7 +67,7 @@ function Finalize(props: IQuestionHolderProps) {
     }
 
     return fileName;
-  }
+  };
 
   return (
     <React.Fragment>
@@ -61,19 +81,57 @@ function Finalize(props: IQuestionHolderProps) {
             </Typography>
 
             <Box pt={3} pl={5.5} pr={5.5}>
-              <Typography variant="body1" component="p" className={classes.cardbody}>
+              <Typography
+                variant="body1"
+                component="p"
+                className={classes.cardbody}
+              >
                 {`Multi Page Questions: ${isMultiPage.toUpperCase()}`}
               </Typography>
-              <Typography variant="body1" component="p" className={classes.cardbody}>
+              <Typography
+                variant="body1"
+                component="p"
+                className={classes.cardbody}
+              >
                 {`Number of students: ${numberOfStudents}`}
               </Typography>
-              <Typography variant="body1" component="p" className={classes.cardbody}>
-                {`Student ID Text File: ${studentIdTextFile ? studentIdTextFile.name : "None"}`}
+              <Typography
+                variant="body1"
+                component="p"
+                className={classes.cardbody}
+              >
+                {`Student ID Text File: ${
+                  studentIdTextFile ? studentIdTextFile.name : "None"
+                }`}
               </Typography>
-              <Typography variant="body1" component="p" className={classes.cardbody}>
+              <Typography
+                variant="body1"
+                component="p"
+                className={classes.cardbody}
+              >
+                {`Faculty Initial: ${
+                  facultyInitial && facultyInitial.length > 0
+                    ? facultyInitial
+                    : "None"
+                }`}
+              </Typography>
+              <Typography
+                variant="body1"
+                component="p"
+                className={classes.cardbody}
+              >
+                {`Semester: ${
+                  semester && semester.length > 0 ? semester : "None"
+                }`}
+              </Typography>
+              <Typography
+                variant="body1"
+                component="p"
+                className={classes.cardbody}
+              >
                 {`Question PDFs seleted: `}
-              </Typography> <br/>
-
+              </Typography>{" "}
+              <br />
               <TableContainer component={Paper} elevation={5}>
                 <Table size="small" aria-label="a dense table">
                   <TableHead>
@@ -89,7 +147,9 @@ function Finalize(props: IQuestionHolderProps) {
                           {question.title}
                         </TableCell>
                         <TableCell align="center">
-                          <div style={{ whiteSpace: "pre-wrap" }}>{getQuestionFileNames(question, index)}</div>
+                          <div style={{ whiteSpace: "pre-wrap" }}>
+                            {getQuestionFileNames(question, index)}
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
