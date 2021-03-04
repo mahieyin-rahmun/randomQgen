@@ -80,13 +80,13 @@ export default function AddQuestionPdf(props: Props) {
             InputProps={{
               inputProps: {
                 accept: ".pdf",
+                multiple: true,
               },
             }}
             variant="outlined"
             name={questionHolder.name}
             onChange={handleFileUpload.bind(this, index)}
             style={{ width: "40rem" }}
-            inputProps={{ multiple: true }}
           />
         </>
       ) : (
