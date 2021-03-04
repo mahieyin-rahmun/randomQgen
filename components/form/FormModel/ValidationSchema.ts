@@ -17,6 +17,7 @@ function parseTextFile(studentIdTextFile) {
     reader.onload = (event) => {
       let textFileData = event.target.result;
       let studentIdList = textFileData.toString().split("\n");
+      studentIdList = studentIdList.filter((studentId) => studentId.length > 0);
       resolve(studentIdList.length);
     };
     reader.readAsText(studentIdTextFile);
