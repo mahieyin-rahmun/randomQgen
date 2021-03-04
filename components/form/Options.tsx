@@ -139,7 +139,7 @@ function Options() {
     }
 
     axios
-      .post(makeUrl(GENERATE_PDF_ENDPOINT), formData, {
+      .post(makeUrl("/", GENERATE_PDF_ENDPOINT), formData, {
         responseType: "blob",
       })
       .then((response) => {

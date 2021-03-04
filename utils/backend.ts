@@ -1,8 +1,7 @@
-export const BASE = "http://localhost:3000/";
 export const GENERATE_PDF_ENDPOINT = "api/generate/";
 
-export const makeUrl = (endpoint: string) => {
-  let url = BASE + endpoint;
+export const makeUrl = (base: string, endpoint: string) => {
+  let url = base + endpoint;
 
   if (!url.endsWith("/")) {
     url += "/";
