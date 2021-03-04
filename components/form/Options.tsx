@@ -161,9 +161,7 @@ function Options() {
     }
   };
 
-  const handleBack = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
+  const handleBack = (_: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setActiveStep(activeStep - 1);
   };
 

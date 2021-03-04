@@ -1,7 +1,5 @@
 import { Fields, Files, File as FormidableFile } from "formidable";
 import fs from "fs";
-import { type } from "os";
-import BufferArrayArchiver from "./archiver.service";
 import CombinePdf from "./combinepdf.service";
 import ReconstructQuestionHolder from "./reconstruct.questionholder.service";
 

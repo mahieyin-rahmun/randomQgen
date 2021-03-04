@@ -1,13 +1,9 @@
-import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import React from "react";
 import { IQuestionHolderProps } from "../../../utils/types";
 import PdfChooserForm from "./PdfChooserForm";
 
 function QuestionHolder(props: IQuestionHolderProps) {
-  const {
-    formValues: { isMultiPage },
-    setValues,
-  } = props;
+  const { setValues } = props;
 
   // const accordionText = isMultiPage === "yes" ?
   //   `You chose that your PDFs will have multi page questions. So, you need to upload separate

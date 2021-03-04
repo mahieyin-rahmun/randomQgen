@@ -1,4 +1,4 @@
-import { Fields, Files, File } from "formidable";
+import { Files, File } from "formidable";
 import fs from "fs";
 import { IPDFHolder, IPDFBuffer } from "./types/types";
 

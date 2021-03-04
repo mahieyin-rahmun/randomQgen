@@ -12,7 +12,7 @@ const {
 } = formModel;
 
 function parseTextFile(studentIdTextFile) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _) => {
     const reader = new FileReader();
     reader.onload = (event) => {
       let textFileData = event.target.result;

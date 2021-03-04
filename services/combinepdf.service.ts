@@ -1,5 +1,4 @@
 import { PDFDocument, PDFPage } from "pdf-lib";
-import { File as FormidableFile } from "formidable";
 import { IPDFBuffer, IPDFHolder, PDFDocAndPageCount } from "./types/types";
 
 class CombinePdf {
