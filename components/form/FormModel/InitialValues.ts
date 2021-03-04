@@ -1,11 +1,11 @@
 import { IFormValues } from "../../../utils/types";
 
 export const initialValues: IFormValues = {
-  isMultiPage: "yes",
+  isMultiPage: "no",
   numberOfStudents: 8,
-  studentIdTextFile: null,
+  studentIdTextFile: undefined,
   questionHolder: [],
-  facultyInitial: null,
-  semester: null,
+  facultyInitial: "",
+  semester: "",
   containsFooterInfo: false,
 };
